@@ -17,7 +17,7 @@ def run():
 
 	elevators = []
 	passengers = []
-	waitingLst = [i for i in range(1, l+1)]
+	waitingList = [i for i in range(1, l+1)]
 
 
 	scheduler = scheduler.Scheduler(n, m, x, y, z, l)
