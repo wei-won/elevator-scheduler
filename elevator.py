@@ -37,20 +37,29 @@ class Elevator:
 			self.status = IDLE
 
 
-	def move(self, t):
+	def moveOneFloor(self):
 		if self.isAvailable == True:
-			if 
 			self.currentFloor = self.currentFloor + self.status
 		else:
 			Print("Elevator "+str(self.elevatorIndex)+" is not available.")
 
 
-	def openDoor(self, t)
+	def openDoor(self, t):
 
 
 	def operateTill(self, t):
-			if (self.upQueue.qsize() > 0):
-				self.status = UP
+		while(self.updateT < t):
+			if self.status = UP:
+				if self.upQueue.qsize() > 0:
+					if self.upQueue.queue[0] != self.currentFloor:
+						if (self.updateT+self.x <= t):
+							moveOneFloor(self)
+
+
+
+
+				else:
+				
 				if self.upQueue.get() != self.currentFloor:
-					moveOneFloor(self)
+					
 
