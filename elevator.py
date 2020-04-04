@@ -1,13 +1,15 @@
 
 from queue import PriorityQueue
+
+"""
+Global Var:
 IDLE = 0
 UP = 1
 DOWN = -1
-
-
+"""
 class Elevator:
-
-	def __int__(self, elevatorIndex, n， x, y, z):
+	
+	def __init__(self, elevatorIndex, n， x, y, z):
 		"""
 		n: number of floors
 		x: seconds to move between the floors
@@ -33,18 +35,25 @@ class Elevator:
 
 
 	def stopFloor(self):
+		if self.status == UP:
+			self.upQueue.get()
+		elif self.status == DOWN:
+			self.downQueue.get()
+
 		if (self.upQueue.qsize()==0 and self.downQueue.qsize()==0):
 			self.status = IDLE
 
 
+
+		self.updateT += self.y
+
+
 	def moveOneFloor(self):
 		if self.isAvailable == True:
-			self.currentFloor = self.currentFloor + self.status
+			self.updateT += self.x
+			self.currentFloor += self.status
 		else:
 			Print("Elevator "+str(self.elevatorIndex)+" is not available.")
-
-
-	def openDoor(self, t):
 
 
 	def operateTill(self, t):
@@ -53,13 +62,15 @@ class Elevator:
 				if self.upQueue.qsize() > 0:
 					if self.upQueue.queue[0] != self.currentFloor:
 						if (self.updateT+self.x <= t):
-							moveOneFloor(self)
-
-
-
-
+							moveOneFloor()
+						else:
+							break
+					else:
+						if (self.updateT+self.y <= t):
+							stopFloor()
+						else:
+							break
 				else:
 				
-				if self.upQueue.get() != self.currentFloor:
 					
 

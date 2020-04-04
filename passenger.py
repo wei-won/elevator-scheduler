@@ -1,5 +1,9 @@
 
+class: Passenger:
 
-
-
-s, b, d = pOrder[0], pOrder[0], pOrder[1]
+	def __init__(self, idx, order):
+		self.passengerIndex = idx
+		self.s = pOrder[0]
+		self.b = pOrder[0]
+		self.d = pOrder[1]
+		self.t = 0
