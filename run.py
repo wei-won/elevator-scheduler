@@ -36,6 +36,13 @@ def run():
 
 		scheduler.schedule(elevators, newPassenger)
 
+	for elvt in elevators:
+		while (len(elvt.upQueue)>0 or (len(elvt.downQueue)>0):
+			elvt.finish()
+
+	T = [psg.t for psg in passengers]
+	print(T)
+
 
 if __name__ == '__main__':
 	run()

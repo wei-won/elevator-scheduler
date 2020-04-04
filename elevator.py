@@ -3,7 +3,6 @@ from queue import PriorityQueue
 import passenger
 
 """
-Global Var:
 IDLE = 0
 UP = 1
 DOWN = -1
@@ -26,7 +25,7 @@ class Elevator:
 		self.z = z
 		self.elevatorIndex = elevatorIndex
 		self.currentFloor = 1
-		self.status = IDLE
+		self.status = 0
 		self.isAvailable = True
 		self.isFull = False
 		self.moveTime = 0
@@ -40,6 +39,8 @@ class Elevator:
 
 
 	def dropOff(self):
+		global waitingList
+		global passengers
 		for pIdx in passengerInList[self.currentFloor]:
 			passengers[pIdx].setT(self.updateT)
 			waitingList.remove(pIdx)
@@ -59,13 +60,13 @@ class Elevator:
 
 
 	def stopFloor(self):
-		if self.status == UP:
+		if self.status == 1:
 			self.upQueue.pop(0)
-		elif self.status == DOWN:
+		elif self.status == -1:
 			self.downQueue.pop(0)
 
 		if (len(self.upQueue)==0 and len(self.downQueue)==0):
-			self.status = IDLE
+			self.status = 0
 
 		self.updateT += self.y
 
@@ -88,7 +89,7 @@ class Elevator:
 
 	def operateUpdate(self, t):
 		while(self.updateT < t):
-			if self.status = UP:
+			if self.status == 1:
 				if len(self.upQueue) > 0:
 					if self.upQueue[0] != self.currentFloor:
 						if (self.updateT+self.x <= t):
@@ -101,11 +102,11 @@ class Elevator:
 						else:
 							break
 				elif len(self.downQueue) > 0:
-					self.status = DOWN
+					self.status = -1
 				else:
-					self.status = IDLE
+					self.status = 0
 			
-			if self.status = DOWN:
+			elif self.status == -1:
 				if len(self.downQueue) > 0:
 					if self.downQueue[0] != self.currentFloor:
 						if (self.updateT+self.x <= t):
@@ -113,15 +114,43 @@ class Elevator:
 						else:
 							break
 					else:
+						self.isTmpStay = True
 						if (self.updateT+self.y <= t):
 							stopFloor()
+							self.isTmpStay = False
 						else:
 							break
 				elif len(self.upQueue) > 0:
-					self.status = UP
+					self.status = 1
 				else:
-					self.status = IDLE
+					self.status = 0
 
-					
-					
+			else:
+				if len(self.upQueue) > 0:
+					self.status = 1
+				if len(self.downQueue) > 0:
+					self.status = -1
 
+
+	def finish(self):
+		while len(self.upQueue) > 0:
+			self.status = 1
+			if self.upQueue[0] != self.currentFloor:
+				moveOneFloor()
+			
+			if self.upQueue[0] == self.currentFloor:
+				self.isTmpStay = True
+				stopFloor()
+				self.isTmpStay = False
+
+		while len(self.downQueue) > 0:
+			self.status = -1
+			if self.downQueue[0] != self.currentFloor:
+				moveOneFloor()
+			
+			if self.downQueue[0] == self.currentFloor:
+				self.isTmpStay = True
+				stopFloor()
+				self.isTmpStay = False
+					
+		self.status = 0
