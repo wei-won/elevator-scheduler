@@ -5,9 +5,9 @@ UP = 1
 DOWN = -1
 
 
-class Elevator():
+class Elevator:
 
-	def __int__(self, n， x, y, z, elevatorIndex):
+	def __int__(self, elevatorIndex, n， x, y, z):
 		"""
 		n: number of floors
 		x: seconds to move between the floors
@@ -24,9 +24,12 @@ class Elevator():
 		self.status = IDLE
 		self.isAvailable = True
 		self.isFull = False
+		self.moveTime = 0
+		self.stopTime = 0
 		self.upQueue = PriorityQueue()
 		self.downQueue = PriorityQueue()
 		self.passengerQueue = PriorityQueue()
+		self.updateT = 0
 
 
 	def stopFloor(self):
@@ -34,14 +37,18 @@ class Elevator():
 			self.status = IDLE
 
 
-	def move(self, ):
+	def move(self, t):
 		if self.isAvailable == True:
+			if 
 			self.currentFloor = self.currentFloor + self.status
 		else:
 			Print("Elevator "+str(self.elevatorIndex)+" is not available.")
 
 
-	def stepRun(self):
+	def openDoor(self, t)
+
+
+	def operateTill(self, t):
 			if (self.upQueue.qsize() > 0):
 				self.status = UP
 				if self.upQueue.get() != self.currentFloor:
