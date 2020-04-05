@@ -1,3 +1,4 @@
+import config
 import elevator
 import scheduler
 import passenger
@@ -12,35 +13,15 @@ def run():
 	UP = 1
 	DOWN = -1
 
-	n, m, x, y, z, l = (3, 2, 1, 2, 1, 2)
-	orders = [[0,1,3], [3,2,1]]
-
-	elevators = []
-	passengers = []
-	waitingList = [i for i in range(1, l+1)]
+	n, m, x, y, z, l = config.params
+	orders = config.orders
 
 
-	scheduler = scheduler.Scheduler(n, m, x, y, z, l)
+	elevatorScheduler = scheduler.Scheduler(n, m, x, y, z, l)
 
-	for e in range(1, m+1):
-		newElevator = elevator.Elevator(e, n, x, y, z)
-		elevators.append(newElevator)
+	elevatorScheduler.run(orders)
 
-	for o in range(1, l+1):
-		pOrder = orders[o-1]
-		newPassenger = passenger.Passenger(o, pOrder)
-		passengers.append(newPassenger)
-		
-		for elvt in elevators:
-			elvt.operateTill(s)
-
-		scheduler.schedule(elevators, newPassenger)
-
-	for elvt in elevators:
-		while (len(elvt.upQueue)>0 or (len(elvt.downQueue)>0):
-			elvt.finish()
-
-	T = [psg.t for psg in passengers]
+	T = [psg.t for psg in config.passengers[1:]]
 	print(T)
 
 

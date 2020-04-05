@@ -1,5 +1,4 @@
-
-from queue import PriorityQueue
+import config
 import passenger
 
 """
@@ -11,7 +10,7 @@ passengers
 """
 class Elevator:
 	
-	def __init__(self, elevatorIndex, n， x, y, z):
+	def __init__(self, elevatorIndex, n, x, y, z):
 		"""
 		n: number of floors
 		x: seconds to move between the floors
@@ -37,27 +36,30 @@ class Elevator:
 		self.updateT = 0
 		self.isTmpStay = False
 
-
 	def dropOff(self):
-		global waitingList
-		global passengers
-		for pIdx in passengerInList[self.currentFloor]:
-			passengers[pIdx].setT(self.updateT)
-			waitingList.remove(pIdx)
-		passengerInList[self.currentFloor].clear()
-
+		# global waitingList
+		# global passengers
+		for pIdx in self.passengerInList[self.currentFloor]:
+			config.passengers[pIdx].setT(self.updateT)
+			config.waitingList.remove(pIdx)
+			print("Passenger " + str(pIdx) + " dropped off by Elevator " + str(self.elevatorIndex) + " on Floor " + str(
+				self.currentFloor) + " at time " + str(self.updateT))
+		self.passengerInList[self.currentFloor].clear()
 
 	def pickUp(self, psgr):
-		passengerOutList[self.currentFloor].remove(psgr)
-		destination = passengers[psgr].d
+		self.passengerOutList[self.currentFloor].remove(psgr)
+		destination = config.passengers[psgr].d
 		if destination > self.currentFloor:
 			self.upQueue.append(destination)
-			self.upQueue.sort()
+			if len(self.upQueue) > 1:
+				self.upQueue.sort()
 		if destination < self.currentFloor:
 			self.downQueue.append(destination)
-			self.upQueue.sort(reverse=True)
-		passengerInList[destination].append(psgr)
-
+			if len(self.downQueue) > 1:
+				self.upQueue.sort(reverse=True)
+		self.passengerInList[destination].append(psgr)
+		print("Passenger " + str(psgr) + " picked up by Elevator " + str(self.elevatorIndex) + " on Floor " +
+			  str(self.currentFloor) + " at time " + str(self.updateT))
 
 	def stopFloor(self):
 		if self.status == 1:
@@ -71,34 +73,34 @@ class Elevator:
 		self.updateT += self.y
 
 		if self.passengerInList[self.currentFloor]:
-			dropOff()
+			self.dropOff()
 
 		if self.passengerOutList[self.currentFloor]:
-			for passengerOut in passengerOutList[self.currentFloor].sort():
-				if self.isFull = False:
-					pickUp(passengerOut)
-
+			for passengerOut in self.passengerOutList[self.currentFloor]:
+				if not self.isFull:
+					self.pickUp(passengerOut)
 
 	def moveOneFloor(self):
 		if self.isAvailable == True:
 			self.updateT += self.x
 			self.currentFloor += self.status
 		else:
-			Print("Elevator "+str(self.elevatorIndex)+" is not available.")
-
+			print("Elevator "+str(self.elevatorIndex)+" is not available.")
 
 	def operateUpdate(self, t):
+		if t == 0:
+			t += 0.1
 		while(self.updateT < t):
 			if self.status == 1:
 				if len(self.upQueue) > 0:
 					if self.upQueue[0] != self.currentFloor:
 						if (self.updateT+self.x <= t):
-							moveOneFloor()
+							self.moveOneFloor()
 						else:
 							break
 					else:
 						if (self.updateT+self.y <= t):
-							stopFloor()
+							self.stopFloor()
 						else:
 							break
 				elif len(self.downQueue) > 0:
@@ -110,13 +112,13 @@ class Elevator:
 				if len(self.downQueue) > 0:
 					if self.downQueue[0] != self.currentFloor:
 						if (self.updateT+self.x <= t):
-							moveOneFloor()
+							self.moveOneFloor()
 						else:
 							break
 					else:
 						self.isTmpStay = True
 						if (self.updateT+self.y <= t):
-							stopFloor()
+							self.stopFloor()
 							self.isTmpStay = False
 						else:
 							break
@@ -128,29 +130,30 @@ class Elevator:
 			else:
 				if len(self.upQueue) > 0:
 					self.status = 1
-				if len(self.downQueue) > 0:
+				elif len(self.downQueue) > 0:
 					self.status = -1
-
+				else:
+					break
 
 	def finish(self):
 		while len(self.upQueue) > 0:
 			self.status = 1
 			if self.upQueue[0] != self.currentFloor:
-				moveOneFloor()
+				self.moveOneFloor()
 			
 			if self.upQueue[0] == self.currentFloor:
 				self.isTmpStay = True
-				stopFloor()
+				self.stopFloor()
 				self.isTmpStay = False
 
 		while len(self.downQueue) > 0:
 			self.status = -1
 			if self.downQueue[0] != self.currentFloor:
-				moveOneFloor()
+				self.moveOneFloor()
 			
 			if self.downQueue[0] == self.currentFloor:
 				self.isTmpStay = True
-				stopFloor()
+				self.stopFloor()
 				self.isTmpStay = False
 					
 		self.status = 0

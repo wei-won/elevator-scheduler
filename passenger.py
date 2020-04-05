@@ -1,11 +1,11 @@
 
-class: Passenger:
+class Passenger:
 
 	def __init__(self, idx, order):
 		self.passengerIndex = idx
-		self.s = pOrder[0]
-		self.b = pOrder[0]
-		self.d = pOrder[1]
+		self.s = order[0]
+		self.b = order[1]
+		self.d = order[2]
 		self.t = 0
 
 	def setT(self, t):
