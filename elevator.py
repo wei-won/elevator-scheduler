@@ -8,6 +8,8 @@ DOWN = -1
 waitingList
 passengers
 """
+
+
 class Elevator:
 	
 	def __init__(self, elevatorIndex, n, x, y, z):
@@ -56,7 +58,7 @@ class Elevator:
 		if destination < self.currentFloor:
 			self.downQueue.append(destination)
 			if len(self.downQueue) > 1:
-				self.upQueue.sort(reverse=True)
+				self.downQueue.sort(reverse=True)
 		self.passengerInList[destination].append(psgr)
 		print("Passenger " + str(psgr) + " picked up by Elevator " + str(self.elevatorIndex) + " on Floor " +
 			  str(self.currentFloor) + " at time " + str(self.updateT))
