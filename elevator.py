@@ -78,7 +78,7 @@ class Elevator:
 			self.dropOff()
 
 		if self.passengerOutList[self.currentFloor]:
-			for passengerOut in self.passengerOutList[self.currentFloor]:
+			for passengerOut in self.passengerOutList[self.currentFloor]:	# put in pickUp
 				if not self.isFull:
 					self.pickUp(passengerOut)
 
@@ -101,8 +101,10 @@ class Elevator:
 						else:
 							break
 					else:
+						self.isTmpStay = True
 						if (self.updateT+self.y <= t):
 							self.stopFloor()
+							self.isTmpStay = False
 						else:
 							break
 				elif len(self.downQueue) > 0:
@@ -118,7 +120,7 @@ class Elevator:
 						else:
 							break
 					else:
-						self.isTmpStay = True
+						self.isTmpStay = True	# where to put? before if or after
 						if (self.updateT+self.y <= t):
 							self.stopFloor()
 							self.isTmpStay = False
