@@ -9,15 +9,16 @@ DOWN = -1
 
 
 class Elevator:
-	
+
 	def __init__(self, elevatorIndex, n, x, y, z):
 		"""
-		n: number of floors
-		x: seconds to move between the floors
-		y: seconds to pick up or drop off a passenger
-		z: total number of passengers
-		elevatorIndex: the index of this elevator
+		:param elevatorIndex: the index of this elevator
+		:param n: number of floors
+		:param x: seconds to move between the floors
+		:param y: seconds to pick up or drop off a passenger
+		:param z: total number of passengers
 		"""
+
 		self.n = n
 		self.x = x
 		self.y = y
@@ -31,8 +32,8 @@ class Elevator:
 		self.stopTime = 0
 		self.upQueue = []
 		self.downQueue = []
-		self.passengerInList = [[] for f in range(n+1)]
-		self.passengerOutList = [[] for f in range(n+1)]
+		self.passengerInList = [[] for f in range(n + 1)]
+		self.passengerOutList = [[] for f in range(n + 1)]
 		self.updateT = 0
 		self.isTmpStay = False
 
@@ -67,7 +68,7 @@ class Elevator:
 		elif self.status == -1:
 			self.downQueue.pop(0)
 
-		if (len(self.upQueue)==0 and len(self.downQueue)==0):
+		if (len(self.upQueue) == 0 and len(self.downQueue) == 0):
 			self.status = 0
 
 		self.updateT += self.y
@@ -76,7 +77,7 @@ class Elevator:
 			self.dropOff()
 
 		if self.passengerOutList[self.currentFloor]:
-			for passengerOut in self.passengerOutList[self.currentFloor]:	# put in pickUp
+			for passengerOut in self.passengerOutList[self.currentFloor]:  # put in pickUp
 				if not self.isFull:
 					self.pickUp(passengerOut)
 
@@ -85,22 +86,22 @@ class Elevator:
 			self.updateT += self.x
 			self.currentFloor += self.status
 		else:
-			print("Elevator "+str(self.elevatorIndex)+" is not available.")
+			print("Elevator " + str(self.elevatorIndex) + " is not available.")
 
 	def operateUpdate(self, t):
 		if t == 0:
 			t += 0.1
-		while(self.updateT < t):
+		while (self.updateT < t):
 			if self.status == 1:
 				if len(self.upQueue) > 0:
 					if self.upQueue[0] != self.currentFloor:
-						if (self.updateT+self.x <= t):
+						if (self.updateT + self.x <= t):
 							self.moveOneFloor()
 						else:
 							break
 					else:
 						self.isTmpStay = True
-						if (self.updateT+self.y <= t):
+						if (self.updateT + self.y <= t):
 							self.stopFloor()
 							self.isTmpStay = False
 						else:
@@ -109,17 +110,17 @@ class Elevator:
 					self.status = -1
 				else:
 					self.status = 0
-			
+
 			elif self.status == -1:
 				if len(self.downQueue) > 0:
 					if self.downQueue[0] != self.currentFloor:
-						if (self.updateT+self.x <= t):
+						if (self.updateT + self.x <= t):
 							self.moveOneFloor()
 						else:
 							break
 					else:
 						self.isTmpStay = True
-						if (self.updateT+self.y <= t):
+						if (self.updateT + self.y <= t):
 							self.stopFloor()
 							self.isTmpStay = False
 						else:
@@ -142,7 +143,7 @@ class Elevator:
 			self.status = 1
 			if self.upQueue[0] != self.currentFloor:
 				self.moveOneFloor()
-			
+
 			if self.upQueue[0] == self.currentFloor:
 				self.isTmpStay = True
 				self.stopFloor()
@@ -152,10 +153,10 @@ class Elevator:
 			self.status = -1
 			if self.downQueue[0] != self.currentFloor:
 				self.moveOneFloor()
-			
+
 			if self.downQueue[0] == self.currentFloor:
 				self.isTmpStay = True
 				self.stopFloor()
 				self.isTmpStay = False
-					
+
 		self.status = 0
