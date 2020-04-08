@@ -7,14 +7,10 @@ import passenger
 def run():
 	"""
 	Take inputs and initialize objects
-	IDLE = 0
-	UP = 1
-	DOWN = -1
 	"""
 
 	n, m, x, y, z, l = config.params
 	orders = config.orders
-
 
 	elevatorScheduler = scheduler.Scheduler(n, m, x, y, z, l)
 
