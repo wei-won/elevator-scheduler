@@ -35,31 +35,39 @@ class Elevator:
 		self.passengerOutList = [[] for f in range(n+1)]
 		self.updateT = 0
 		self.isTmpStay = False
+		self.passengerCount = 0
 
 	def dropOff(self):
-		# global waitingList
-		# global passengers
 		for pIdx in self.passengerInList[self.currentFloor]:
 			config.passengers[pIdx].setT(self.updateT)
 			config.waitingList.remove(pIdx)
+			self.passengerCount -= 1
 			print("Passenger " + str(pIdx) + " dropped off by Elevator " + str(self.elevatorIndex) + " on Floor " + str(
 				self.currentFloor) + " at time " + str(self.updateT))
 		self.passengerInList[self.currentFloor].clear()
+		self.isFull = False
 
-	def pickUp(self, psgr):
-		self.passengerOutList[self.currentFloor].remove(psgr)
-		destination = config.passengers[psgr].d
-		if destination > self.currentFloor:
-			self.upQueue.append(destination)
-			if len(self.upQueue) > 1:
-				self.upQueue.sort()
-		if destination < self.currentFloor:
-			self.downQueue.append(destination)
-			if len(self.downQueue) > 1:
-				self.downQueue.sort(reverse=True)
-		self.passengerInList[destination].append(psgr)
-		print("Passenger " + str(psgr) + " picked up by Elevator " + str(self.elevatorIndex) + " on Floor " +
-			  str(self.currentFloor) + " at time " + str(self.updateT))
+	def pickUp(self):
+		for passengerOut in self.passengerOutList[self.currentFloor]:
+			if not self.isFull:
+				self.passengerOutList[self.currentFloor].remove(passengerOut)
+				destination = config.passengers[passengerOut].d
+				if destination > self.currentFloor:
+					self.upQueue.append(destination)
+					if len(self.upQueue) > 1:
+						self.upQueue.sort()
+					self.passengerCount += 1
+				if destination < self.currentFloor:
+					self.downQueue.append(destination)
+					if len(self.downQueue) > 1:
+						self.downQueue.sort(reverse=True)
+					self.passengerCount += 1
+				self.passengerInList[destination].append(passengerOut)
+				# self.passengerCount = sum([len(floorPassenger) for floorPassenger in self.passengerInList])
+				if self.passengerCount == self.z:
+					self.isFull = True
+				print("Passenger " + str(passengerOut) + " picked up by Elevator " + str(self.elevatorIndex) + " on Floor " +
+					  str(self.currentFloor) + " at time " + str(self.updateT))
 
 	def stopFloor(self):
 		if self.status == 1:
@@ -76,9 +84,9 @@ class Elevator:
 			self.dropOff()
 
 		if self.passengerOutList[self.currentFloor]:
-			for passengerOut in self.passengerOutList[self.currentFloor]:	# put in pickUp
-				if not self.isFull:
-					self.pickUp(passengerOut)
+			# for passengerOut in self.passengerOutList[self.currentFloor]:	# put in pickUp
+			# 	if not self.isFull:
+			self.pickUp()
 
 	def moveOneFloor(self):
 		if self.isAvailable == True:
