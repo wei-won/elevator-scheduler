@@ -5,8 +5,6 @@ import passenger
 IDLE = 0
 UP = 1
 DOWN = -1
-waitingList
-passengers
 """
 
 
@@ -120,7 +118,7 @@ class Elevator:
 						else:
 							break
 					else:
-						self.isTmpStay = True	# where to put? before if or after
+						self.isTmpStay = True
 						if (self.updateT+self.y <= t):
 							self.stopFloor()
 							self.isTmpStay = False
