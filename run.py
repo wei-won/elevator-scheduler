@@ -1,18 +1,32 @@
 import config
-import elevator
 import scheduler
-import passenger
+import argparse
 
 
 def run():
 	"""
-	Take inputs and initialize objects
+	Take inputs and run scheduler
 	"""
+	parser = argparse.ArgumentParser(description='Take in input values.')
 
-	n, m, x, y, z, l = config.params
+	parser.add_argument('n', type=int, nargs='?', default=config.params[0],
+						help='number of floors')
+	parser.add_argument('m', type=int, nargs='?', default=config.params[1],
+						help='number of elevators installed')
+	parser.add_argument('x', type=int, nargs='?', default=config.params[2],
+						help='time (seconds) taken to move between the floors')
+	parser.add_argument('y', type=int, nargs='?', default=config.params[3],
+						help='time (seconds) taken to pick up or drop off a passenger')
+	parser.add_argument('z', type=int, nargs='?', default=config.params[4],
+						help='elevator car capacity: number of passengers can be boarded at a time')
+	parser.add_argument('l', type=int, nargs='?', default=config.params[5],
+						help='total number of passengers')
+	args = parser.parse_args()
+
+	# n, m, x, y, z, l = config.params
 	orders = config.orders
 
-	elevatorScheduler = scheduler.Scheduler(n, m, x, y, z, l)
+	elevatorScheduler = scheduler.Scheduler(args.n, args.m, args.x, args.y, args.z, args.l)
 
 	elevatorScheduler.run(orders)
 
