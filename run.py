@@ -1,6 +1,7 @@
 import config
 import scheduler
 import argparse
+from generatePassengerRequest import generateRequests
 
 
 def run():
@@ -24,7 +25,10 @@ def run():
 	args = parser.parse_args()
 
 	# n, m, x, y, z, l = config.params
-	orders = config.orders
+	if (args.n, args.m, args.x, args.y, args.z, args.l) == config.params:
+		orders = config.orders
+	else:
+		orders = generateRequests(args.n, args.m, args.x, args.y, args.z, args.l)
 
 	elevatorScheduler = scheduler.Scheduler(args.n, args.m, args.x, args.y, args.z, args.l)
 
