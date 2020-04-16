@@ -3,7 +3,6 @@ import scheduler
 import argparse
 from generatePassengerRequest import generateRequests
 
-
 def run():
 	"""
 	Take inputs and run scheduler

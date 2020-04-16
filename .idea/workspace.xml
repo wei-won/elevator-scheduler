@@ -118,6 +118,7 @@
         <option value="$PROJECT_DIR$/passenger.py" />
         <option value="$PROJECT_DIR$/scheduler.py" />
         <option value="$PROJECT_DIR$/config.py" />
+        <option value="$PROJECT_DIR$/run.py" />
         <option value="$PROJECT_DIR$/elevator.py" />
         <option value="$PROJECT_DIR$/generatePassengerRequest.py" />
         <option value="$PROJECT_DIR$/run.py" />
@@ -305,7 +306,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Update run.py" />
     <MESSAGE value="Update elevator.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update elevator.py" />
+    <MESSAGE value="Update run.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update run.py" />
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
